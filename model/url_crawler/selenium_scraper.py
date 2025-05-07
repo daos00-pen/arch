@@ -179,8 +179,10 @@ class SeleniumScraper:
             self.driver.get(url)
 
             total_height = self.driver.execute_script("return document.documentElement.scrollHeight")
-            if total_height > 5000:
+            if total_height > 5000: # estimated maximum window size
                 total_height = 5000
+
+            # set height of window size to ensure maximum amount of dynamically loaded content
             self.driver.set_window_size(1920, total_height)
 
             time.sleep(1)
