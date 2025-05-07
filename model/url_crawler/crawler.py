@@ -8,7 +8,7 @@ from utils.utilities_responses import requests_response
 from utils.utilities_url import get_base_url
 
 
-class LinkCrawler:
+class Crawler:
     def __init__(self, url: str, number_of_htmls: int):
         self.url = url
         self.base_url = get_base_url(self.url)
@@ -37,8 +37,9 @@ class LinkCrawler:
     def scrape_links(self) -> Counter:
         try:
             self.collected_internal_links.update(self.scraper.scrape_links())
-        except Exception:
-            pass
+        except Exception as e:
+            self.scraper.close_driver()
+            raise Exception(e)
 
         if len(self.collected_internal_links) < self.number_of_htmls:
             with requests.Session() as session:

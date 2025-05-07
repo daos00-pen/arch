@@ -8,7 +8,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from utils.custom_exceptions import ScrapeException
+from utils.custom_exceptions import ScrapeException, LinkScrapeException
 from utils.utilities_responses import check_webpage_response
 from utils.utilities_url import get_base_url
 
@@ -74,9 +74,8 @@ class SeleniumScraper:
                             self.collected_internal_links.update([urldefrag(link).url.strip('/')])
 
                 self.url_language = soup.html.get("lang")
-        except Exception as e:
-            raise Exception("Exception inside SeleniumCrawler, couldn't visit page. url: ", self.base_url, "except: ",
-                            e)
+        except Exception:
+            raise LinkScrapeException(self.url)
         return self.get_collected_internal_links()
 
     def get_collected_internal_links(self):
